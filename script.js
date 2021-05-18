@@ -23,7 +23,17 @@ let round=0;
         return round
     }
 
-    return {getItem,setItem,setRound,getRound}
+    function reset()
+    {
+        board.forEach((item,index)=>{
+            board[index]="";
+        })
+        displayController.displayGrid();
+        displayController.result.innerHTML = "";
+        displayController.gridBoard.style.pointerEvents = "auto";
+    }
+
+    return {getItem,setItem,setRound,getRound,reset}
 
 })()
 
@@ -34,37 +44,44 @@ const Player = (sign)=>{
 const displayController = (()=>{
     
     const grid = document.querySelectorAll(".grid-item")
-
+    const btn = document.querySelector(".btn")
+    const result = document.querySelector(".result")
+    const gridBoard = document.querySelector(".grid");
     const displayGrid = ()=>{ 
         grid.forEach((item,index)=>{
             item.innerHTML = gameBoard.getItem(index);
         })
     }
-        grid.forEach((item,index)=>{
-            item.addEventListener("click",()=>{
-                let boardValue = gameBoard.getItem(index)
-                let val = gameController.getSign()
-                if(boardValue=="")
-                    gameController.changeSign();
-                else
-                    val=boardValue;
-                
+    
+    btn.addEventListener("click",()=>{
+        gameBoard.reset();
+    })
+    grid.forEach((item,index)=>{
+        item.addEventListener("click",()=>{
+            let boardValue = gameBoard.getItem(index)
+            let val = gameController.getSign()
+            if(boardValue=="")
+            gameController.changeSign();
+            else
+            val=boardValue;
+            
                 gameBoard.setItem(index,val)
                 item.innerHTML = val;
                 
-                displayGrid();
-                console.log(gameController.isWinning(val));
                 if(gameController.isWinning(val))
-                alert("wins");
-
-                if(gameController.isFull())
-                alert("full")
-
-
+                {
+                    result.innerHTML = `${val} is Winner`
+                    gridBoard.style.pointerEvents = "none";
+                }
+                else if(gameController.isFull())
+                
+                result.innerHTML = `Draw`
+                
+                displayGrid();
             })
         })
 
-    return {grid}
+        return {displayGrid,gridBoard,result};
 })()
 
 
@@ -94,16 +111,6 @@ const gameController = (()=>{
         const eight=gameBoard.getItem(7)
         const nine=gameBoard.getItem(8)
 
-        console.log(symbol)
-        console.log(one)
-        console.log(two)
-        console.log(third)
-        console.log(four)
-        console.log(five)
-        console.log(six)
-        console.log(seven)
-        console.log(eight)
-        console.log(nine)
 
         if(one==symbol && two==symbol && third==symbol)
             return true;
@@ -113,8 +120,14 @@ const gameController = (()=>{
             return true;
         if(one==symbol && five==symbol && nine==symbol)
             return true;
+        if(two==symbol && five==symbol && eight==symbol)
+            return true;
         if(third==symbol && five==symbol && seven==symbol)
             return true;
+        if(one==symbol && third==symbol && seven==symbol)
+            return true;
+        if(third==symbol && five==symbol && nine==symbol)
+            return true
         return false
     }
 
@@ -126,7 +139,6 @@ const gameController = (()=>{
         }
         return true
     }
-
     return {getSign,isFull,isWinning,changeSign}
     
 })()
