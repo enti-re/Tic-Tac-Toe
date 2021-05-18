@@ -1,0 +1,21 @@
+body{
+    text-align: center;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(3,200px);
+    margin:  2rem auto;
+    max-width: 500px;
+    min-height: 500px;
+}
+
+.grid-item{
+    min-width: 200px;
+    max-width: 200px;
+    background-color: blanchedalmond;
+}
+
+.grid-item:hover{
+    background-color: cadetblue;
+}
