@@ -124,9 +124,13 @@ const gameController = (()=>{
             return true;
         if(third==symbol && five==symbol && seven==symbol)
             return true;
-        if(one==symbol && third==symbol && seven==symbol)
+        if(one==symbol && four==symbol && seven==symbol)
             return true;
         if(third==symbol && five==symbol && nine==symbol)
+            return true
+        if(third==symbol && six==symbol && nine==symbol)
+            return true
+        if(one==symbol && four==symbol && seven==symbol)
             return true
         return false
     }
